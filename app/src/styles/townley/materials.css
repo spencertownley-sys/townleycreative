@@ -1,0 +1,151 @@
+/*
+ * Materials (PRD tab 2, Textures). A section gets one material plus the page
+ * grain, never two materials. Built from CSS gradients and inline SVG noise:
+ * zero texture images. Children of a material sit above its texture layers.
+ */
+.tc-mat {
+  position: relative;
+  isolation: isolate;
+}
+
+.tc-mat-ground {
+  background-color: var(--ground);
+}
+
+/* Brick: 58px courses, 132px bricks, alternate courses offset 66px. */
+.tc-mat-brick {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: var(--wall);
+  background-image:
+    linear-gradient(180deg, rgb(0 0 0 / 0.72) 0%, rgb(0 0 0 / 0.25) 45%, rgb(0 0 0 / 0.65) 100%),
+    repeating-linear-gradient(180deg, rgb(0 0 0 / 0.42) 0 4px, transparent 4px 58px),
+    radial-gradient(
+      ellipse at 50% var(--lift-y, 50%),
+      var(--wall-lift) 0%,
+      #141417 55%,
+      #0d0d10 100%
+    );
+}
+
+.tc-mat-brick::before,
+.tc-mat-brick::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(0 0 0 / 0.34) 0 4px,
+    transparent 4px 132px
+  );
+  -webkit-mask-image: repeating-linear-gradient(180deg, #000 0 58px, transparent 58px 116px);
+  mask-image: repeating-linear-gradient(180deg, #000 0 58px, transparent 58px 116px);
+}
+
+.tc-mat-brick::after {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 66px,
+    rgb(0 0 0 / 0.3) 66px 70px,
+    transparent 70px 132px
+  );
+  -webkit-mask-image: repeating-linear-gradient(180deg, transparent 0 58px, #000 58px 116px);
+  mask-image: repeating-linear-gradient(180deg, transparent 0 58px, #000 58px 116px);
+}
+
+/* No mask support: skip the offset course; a single course reads fine. */
+@supports not ((mask-image: none) or (-webkit-mask-image: none)) {
+  .tc-mat-brick::after {
+    display: none;
+  }
+}
+
+/* Wet asphalt: dark gradient floor with an inset top shadow. */
+.tc-mat-asphalt {
+  background: linear-gradient(180deg, #16171c 0%, #0b0b0f 55%, #050507 100%);
+  box-shadow: inset 0 26px 50px rgb(0 0 0 / 0.85);
+}
+
+/* 7px ripple lines; laid over the reflection, so it is its own layer. */
+.tc-ripples {
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0.035) 0 1px,
+    transparent 1px 7px
+  );
+  opacity: 0.8;
+}
+
+/* Brushed metal: 1px lines at 7% white over a cool gradient. */
+.tc-mat-metal {
+  background-color: #1d2124;
+  background-image:
+    repeating-linear-gradient(180deg, rgb(255 255 255 / 0.07) 0 1px, transparent 1px 3px),
+    linear-gradient(90deg, #1a1e21 0%, #2a2f33 30%, #1c2023 55%, #2b3034 80%, #191d20 100%);
+}
+
+/* Leather: warm base, pebble grain, a stitch line inset 10px, soft inner shadow. */
+.tc-mat-leather {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--leather);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.04' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 0.92 0 0 0 0 0.84 0.1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+  box-shadow:
+    inset 0 0 28px rgb(0 0 0 / 0.55),
+    0 12px 30px rgb(0 0 0 / 0.45);
+}
+
+.tc-mat-leather::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  z-index: -1;
+  pointer-events: none;
+  border: 1px dashed var(--stitch);
+  border-radius: inherit;
+}
+
+/* Dirt and dust: warm low-frequency noise, a few soft smudges, a flashlight sweep. */
+.tc-mat-dirt {
+  background-color: var(--ground);
+  background-image:
+    linear-gradient(112deg, transparent 28%, rgb(255 236 214 / 0.035) 48%, transparent 66%),
+    radial-gradient(ellipse 38% 30% at 16% 24%, rgb(42 36 32 / 0.6), transparent 72%),
+    radial-gradient(ellipse 30% 26% at 82% 34%, rgb(42 36 32 / 0.5), transparent 72%),
+    radial-gradient(ellipse 44% 30% at 62% 86%, rgb(42 36 32 / 0.55), transparent 74%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.165 0 0 0 0 0.141 0 0 0 0 0.125 0.16 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23d)'/%3E%3C/svg%3E");
+}
+
+/* Metal divider bar with bolt heads at the ends. */
+.tc-metal-bar {
+  position: relative;
+  height: var(--bar-h, 10px);
+  border-top: 1px solid rgb(255 255 255 / 0.06);
+  border-bottom: 1px solid #0a0c0d;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.5);
+}
+
+.tc-metal-bar__bolt {
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: var(--steel-hi);
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 0.28),
+    inset 0 -1px 1px rgb(0 0 0 / 0.5);
+}
+
+.tc-metal-bar__bolt--l {
+  left: 14px;
+}
+
+.tc-metal-bar__bolt--r {
+  right: 14px;
+}

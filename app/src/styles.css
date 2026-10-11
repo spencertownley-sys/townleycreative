@@ -19,6 +19,10 @@
 @import "./components/prompt-box/prompt-box.css";
 @import "./components/icon-tile/icon-tile.css";
 
+/* Townley Creative: the site's own plain-CSS layer (unlayered, so it wins over
+ * the template's layered base styles). */
+@import "./styles/townley/index.css";
+
 @import "tw-animate-css";
 
 @custom-variant dark (&:where([data-theme="default-dark"], [data-theme="default-dark"] *));
