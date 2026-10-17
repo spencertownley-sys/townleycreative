@@ -1,5 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { StructuredData } from "../components/StructuredData";
+import { Hero } from "../components/townley/Hero";
+import { ReelProvider } from "../components/townley/Reel";
+import { Audit } from "../components/townley/sections/Audit";
+import { Pricing } from "../components/townley/sections/Pricing";
+import { Process } from "../components/townley/sections/Process";
+import { Services } from "../components/townley/sections/Services";
+import { Statement } from "../components/townley/sections/Statement";
+import { Studio } from "../components/townley/sections/Studio";
+import { Work } from "../components/townley/sections/Work";
+import { SITE_NAME, TAGLINE } from "../site";
+
+// LocalBusiness schema (PRD tab 3, SEO basics). Add "url" once a domain exists.
+const BUSINESS_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: SITE_NAME,
+  description: TAGLINE,
+  areaServed: [
+    { "@type": "City", name: "Seattle" },
+    { "@type": "City", name: "Tacoma" },
+  ],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Seattle",
+    addressRegion: "WA",
+    addressCountry: "US",
+  },
+  priceRange: "$$",
+  knowsAbout: ["Photography", "Video production", "Web design", "Brand identity", "UI/UX design"],
+});
+
 export const Route = createFileRoute("/")({
   // No title/description here on purpose: the home page inherits the app's
   // editable page metadata from the root route (set via the marketplace meta
@@ -9,20 +41,22 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// Replace this placeholder. Routes are server-rendered — keep render SSR-safe
-// (no window/document at module top level or during render). See ./README.md.
+// Routes are server-rendered — keep render SSR-safe (no window/document at
+// module top level or during render). See ./README.md.
 function Index() {
   return (
-    <div
-      data-higgsfield-blank-page-placeholder="REMOVE_THIS"
-      className="flex min-h-screen flex-col items-center justify-center gap-3 px-6 text-center"
-    >
-      <h1 className="text-2xl font-semibold tracking-tight">
-        Your website will live here.
-      </h1>
-      <p className="text-base text-gray-500">
-        Ask Higgsfield Supercomputer to build it.
-      </p>
-    </div>
+    <ReelProvider>
+      <StructuredData json={BUSINESS_JSON} />
+      <main id="main">
+        <Hero />
+        <Statement />
+        <Services />
+        <Work />
+        <Process />
+        <Pricing />
+        <Studio />
+        <Audit />
+      </main>
+    </ReelProvider>
   );
 }

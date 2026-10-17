@@ -1,0 +1,322 @@
+/* Nav, buttons and the OPEN status sign (PRD tabs 2, 3 and 6). */
+
+/* Nav: fixed, 72px; transparent over the hero, brushed metal after 100px. */
+.tc-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: var(--nav-h);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 var(--gutter);
+}
+
+.tc-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  border-bottom: 1px solid #0a0c0d;
+  box-shadow:
+    0 2px 0 rgb(255 255 255 / 0.04),
+    0 12px 30px rgb(0 0 0 / 0.6);
+  background-color: #1d2124;
+  background-image:
+    repeating-linear-gradient(180deg, rgb(255 255 255 / 0.07) 0 1px, transparent 1px 3px),
+    linear-gradient(90deg, #1a1e21 0%, #2a2f33 30%, #1c2023 55%, #2b3034 80%, #191d20 100%);
+}
+
+.tc-nav[data-solid]::before {
+  opacity: 1;
+}
+
+.tc-nav__mark {
+  margin-left: -6px;
+  padding: 6px;
+  font-family: var(--font-script);
+  font-size: 34px;
+  line-height: 1;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: var(--glow-word-text);
+}
+
+.tc-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.tc-nav__link {
+  padding: 14px 0;
+  font: 400 13px/1 var(--font-caps);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition:
+    color 120ms ease,
+    text-shadow 120ms ease;
+}
+
+/* Hover: the item lights, white with a 6px green glow. */
+.tc-nav__link:hover,
+.tc-nav__link:focus-visible {
+  color: #fff;
+  text-shadow: 0 0 6px var(--word);
+}
+
+.tc-nav__start {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  border: 1px solid var(--tube);
+  border-radius: 3px;
+  font: 400 13px/1 var(--font-caps);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: var(--glow-tube-text);
+  box-shadow: var(--glow-tube-sm);
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.tc-nav__start:hover {
+  border-color: var(--tube-hot);
+  box-shadow:
+    var(--glow-tube-sm),
+    inset 0 0 12px rgb(61 108 255 / 0.45);
+}
+
+.tc-nav__mobile {
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+
+.tc-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.tc-icon-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 900px) {
+  .tc-nav__links {
+    display: none;
+  }
+
+  .tc-nav__mobile {
+    display: flex;
+  }
+
+  .tc-nav__start {
+    letter-spacing: 0.16em;
+  }
+}
+
+/* Mobile menu: a full-screen dark panel; the anchors are tube words. */
+.tc-menu {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0 var(--gutter) 32px;
+  border: 0;
+  background: rgb(8 8 10 / 0.97);
+  color: var(--text);
+}
+
+.tc-menu[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.tc-menu::backdrop {
+  background: rgb(0 0 0 / 0.7);
+}
+
+.tc-menu__top {
+  flex: none;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tc-menu__list {
+  margin: auto 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tc-menu__link {
+  display: inline-block;
+  padding: 10px 0;
+  font: 500 clamp(30px, 9vw, 44px)/1.1 var(--font-caps);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  text-shadow:
+    0 0 6px rgb(61 108 255 / 0.9),
+    0 0 18px rgb(61 108 255 / 0.45);
+  transition: text-shadow 120ms ease;
+}
+
+.tc-menu__link:hover,
+.tc-menu__link:focus-visible {
+  text-shadow:
+    0 0 6px var(--word),
+    0 0 18px rgb(57 255 20 / 0.6);
+}
+
+.tc-menu__foot {
+  flex: none;
+}
+
+/* TubeButton: fill-green (the one message button), outline-blue, text. */
+.tc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font: 500 13px/1 var(--font-caps);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    box-shadow 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.tc-btn--fill {
+  background: var(--word);
+  border-color: var(--word);
+  color: var(--on-word);
+  box-shadow: var(--glow-word-sm);
+}
+
+/* Filled hover: the glow radius doubles. */
+.tc-btn--fill:hover {
+  box-shadow: var(--glow-word-md);
+}
+
+.tc-btn--outline {
+  background: transparent;
+  border-color: var(--tube);
+  color: var(--text);
+  font-weight: 400;
+  box-shadow: var(--glow-tube-sm);
+}
+
+/* Outline hover: the border brightens and an inner glow appears. */
+.tc-btn--outline:hover {
+  border-color: var(--tube-hot);
+  box-shadow:
+    var(--glow-tube-sm),
+    inset 0 0 12px rgb(61 108 255 / 0.45);
+}
+
+.tc-btn--text {
+  min-height: 44px;
+  padding: 0 4px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 400;
+}
+
+.tc-btn--text:hover {
+  color: #fff;
+  text-shadow: var(--glow-word-text);
+}
+
+/* The OPEN status sign. */
+.tc-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border: 1px solid var(--steel-hi);
+  border-radius: 3px;
+  background: rgb(9 9 11 / 0.6);
+  font: 400 12px/1 var(--font-caps);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 150ms ease;
+}
+
+a.tc-status:hover {
+  border-color: var(--tube);
+}
+
+.tc-status__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dot, var(--word));
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--dot, var(--word)) 80%, transparent),
+    0 0 20px color-mix(in srgb, var(--dot, var(--word)) 40%, transparent);
+}
+
+.tc-status--pulse .tc-status__dot {
+  animation: tc-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes tc-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tc-status--pulse .tc-status__dot {
+    animation: none;
+  }
+}

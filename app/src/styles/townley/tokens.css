@@ -1,0 +1,161 @@
+/*
+ * Townley Creative tokens and page base (PRD tab 2, Visual Identity).
+ * Two neons on a near-black ground. Blue is structure (boxes, lines,
+ * borders); green is message (words, the one button). Everything else is
+ * a texture.
+ */
+:root {
+  --ground: #0b0a0c;
+  --wall: #17171a;
+  --wall-lift: #232328;
+  --steel: #2a2f33;
+  --steel-hi: #3a3a40;
+  --leather: #1c1715;
+  --stitch: #3a2e27;
+  --tube: #3d6cff;
+  --tube-hot: color-mix(in srgb, var(--tube), #fff 32%);
+  --word: #39ff14;
+  --word-core: #f4ffe9;
+  --caps-core: #dcffd0;
+  --on-word: #06150a;
+  --text: #e3e6e4;
+  --text-dim: #8f959a;
+  --text-faint: #55595e;
+  --alert: #ff3b3b;
+
+  /* Unlit glass: what the sign looks like before it strikes. */
+  --unlit-tube: #25282d;
+  --unlit-word: #2c2f2d;
+
+  --font-script: "Mr Dafoe", "Brush Script MT", cursive;
+  --font-caps: "Oswald", "Arial Narrow", sans-serif;
+  --font-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+
+  --nav-h: 72px;
+  --gutter: 64px;
+
+  /* Small UI glows (nav, buttons, status dot) in the fixed brand colors. */
+  --glow-word-sm: 0 0 8px rgb(57 255 20 / 0.8), 0 0 20px rgb(57 255 20 / 0.4);
+  --glow-word-md: 0 0 16px rgb(57 255 20 / 0.85), 0 0 40px rgb(57 255 20 / 0.45);
+  --glow-word-text: 0 0 6px var(--word), 0 0 16px rgb(57 255 20 / 0.7);
+  --glow-tube-sm: 0 0 8px rgb(61 108 255 / 0.8), 0 0 20px rgb(61 108 255 / 0.4);
+  --glow-tube-text: 0 0 6px var(--tube), 0 0 16px rgb(61 108 255 / 0.7);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --gutter: 20px;
+  }
+}
+
+html {
+  background: var(--ground);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+body.tc-body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 760px) {
+  body.tc-body {
+    font-size: 16px;
+  }
+}
+
+.tc-body ::selection {
+  background: var(--tube);
+  color: #fff;
+}
+
+/* Focus ring: a 2px blue tube, visible on every control. */
+.tc-body :focus-visible {
+  outline: 2px solid var(--tube);
+  outline-offset: 3px;
+}
+
+.tc-skip {
+  position: fixed;
+  left: 12px;
+  top: -120px;
+  z-index: 200;
+  padding: 12px 16px;
+  background: var(--ground);
+  border: 1px solid var(--tube);
+  color: #fff;
+  font: 500 13px/1 var(--font-caps);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.tc-skip:focus {
+  top: 12px;
+}
+
+/* One film-grain layer and one vignette for the whole page (root layout). */
+.tc-grain {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 91;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+}
+
+@media (max-width: 760px) {
+  .tc-grain {
+    opacity: 0.08;
+  }
+}
+
+@supports not (mix-blend-mode: overlay) {
+  .tc-grain {
+    opacity: 0.06;
+  }
+}
+
+.tc-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 40%, transparent 50%, rgb(0 0 0 / 0.55) 100%);
+}
+
+/* Visually hidden, still read by screen readers. */
+.tc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
