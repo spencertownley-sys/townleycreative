@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { QUOTE_HREF, SERVICE_AREA, TAGLINE, bookCallHref } from "../../site";
 import { NeonSign } from "./NeonSign";
+import { PlayReelButton } from "./Reel";
 import { StatusSign } from "./StatusSign";
 import { TubeButton } from "./TubeButton";
 
@@ -52,6 +53,7 @@ export function Hero() {
             <TubeButton variant="outline" href={QUOTE_HREF}>
               Get a quote
             </TubeButton>
+            <PlayReelButton className="tc-hero__reel" />
           </div>
         </div>
         <StatusSign className="tc-hero__status" />

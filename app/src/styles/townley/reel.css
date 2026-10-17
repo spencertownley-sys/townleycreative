@@ -1,0 +1,397 @@
+/*
+ * Reel theatre mode ("Lights down"). <html data-theatre>: dim → on → return.
+ * dim: the hero sign flickers off. on: letterbox bars close in over the page
+ * and the reel plays in a 2.39:1 scope frame (16:9 on portrait phones).
+ * return: the sign strikes back on.
+ */
+
+/* The hero sign goes dark before the theatre opens, and stays dark behind it. */
+:root[data-theatre="dim"] .tc-hero .tc-sign__art,
+:root[data-theatre="on"] .tc-hero .tc-sign__art {
+  animation: tc-lights-down 280ms step-end both;
+}
+
+@keyframes tc-lights-down {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 0.9;
+  }
+  60% {
+    opacity: 0.12;
+  }
+  100% {
+    opacity: 0.06;
+  }
+}
+
+/* Lights up: the strike sequence again. */
+:root[data-theatre="return"] .tc-hero .tc-sign__art {
+  animation: none;
+}
+
+:root[data-theatre="return"] .tc-hero .tc-sign__box {
+  animation: tc-strike-tube 500ms step-end 120ms both;
+}
+
+:root[data-theatre="return"] .tc-hero .tc-sign__script {
+  --core: var(--word-core);
+  animation: tc-strike-word 550ms step-end 520ms both;
+}
+
+:root[data-theatre="return"] .tc-hero .tc-sign__caps {
+  --core: var(--caps-core);
+  animation: tc-strike-word 550ms step-end 610ms both;
+}
+
+:root[data-theatre="return"] .tc-hero .tc-sign__wash {
+  animation: tc-wash-in 400ms ease-out 900ms both;
+}
+
+.tc-theatre {
+  --ratio: 2.39;
+  --frame-h: min(calc(100dvh - 190px), calc(100vw / var(--ratio)));
+  --bar: calc((100dvh - var(--frame-h)) / 2);
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: transparent;
+  color: var(--text);
+}
+
+.tc-theatre[open] {
+  display: block;
+}
+
+.tc-theatre::backdrop {
+  background: transparent;
+}
+
+.tc-theatre__dark {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  animation: tc-fade-up 650ms ease both;
+}
+
+.tc-theatre__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: var(--bar);
+  background: #000;
+}
+
+.tc-theatre__bar--top {
+  top: 0;
+  animation: tc-bar-top 560ms cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+
+.tc-theatre__bar--bottom {
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  animation: tc-bar-bottom 560ms cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+
+@keyframes tc-bar-top {
+  from {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes tc-bar-bottom {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes tc-fade-up {
+  from {
+    opacity: 0;
+  }
+}
+
+.tc-theatre__frame {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--bar);
+  z-index: 1;
+  height: var(--frame-h);
+  background: #000;
+  animation: tc-fade-up 700ms ease 380ms both;
+}
+
+.tc-theatre__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+  cursor: pointer;
+}
+
+.tc-theatre__top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 var(--gutter) 16px;
+}
+
+.tc-theatre__title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0;
+  color: var(--text);
+}
+
+.tc-theatre__runtime {
+  color: var(--text-dim);
+}
+
+.tc-theatre__close {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 4px 0 14px;
+  border: 1px solid #2b3035;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text);
+  font: 400 12px/1 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.tc-theatre__close svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.tc-theatre__close:hover {
+  border-color: var(--tube);
+  color: #fff;
+}
+
+.tc-theatre__controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 var(--gutter);
+}
+
+.tc-theatre__play {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--tube);
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: var(--glow-tube-sm);
+}
+
+.tc-theatre__play svg {
+  width: 18px;
+  height: 18px;
+}
+
+.tc-theatre__tc {
+  flex: none;
+  min-width: 11ch;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.tc-theatre__tc--total {
+  color: var(--text-dim);
+  text-align: right;
+}
+
+/* Scrubber: a thin tube; the played part lit. */
+.tc-theatre__scrub {
+  flex: 1;
+  min-width: 80px;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.tc-theatre__scrub::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(90deg, var(--tube) var(--progress, 0%), #2a2e34 var(--progress, 0%));
+  box-shadow: 0 0 6px rgb(61 108 255 / 0.5);
+}
+
+.tc-theatre__scrub::-moz-range-track {
+  height: 2px;
+  background: #2a2e34;
+}
+
+.tc-theatre__scrub::-moz-range-progress {
+  height: 2px;
+  background: var(--tube);
+}
+
+.tc-theatre__scrub::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -5px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px var(--tube);
+}
+
+.tc-theatre__scrub::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px var(--tube);
+}
+
+.tc-theatre__mute {
+  flex: none;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #2b3035;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.tc-theatre__note {
+  margin: 0;
+  padding: 0 var(--gutter);
+  font: 400 11px/1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+}
+
+/* End card: the sign strikes on over the last frame. */
+.tc-theatre__end {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  background: rgb(0 0 0 / 0.78);
+  animation: tc-fade-up 500ms ease both;
+}
+
+.tc-theatre__sign {
+  --sign-max: 0.46px;
+  width: min(92vw, 420px);
+}
+
+.tc-theatre__end .tc-sign__box {
+  animation: tc-strike-tube 500ms step-end 250ms both;
+}
+
+.tc-theatre__end .tc-sign__script {
+  --core: var(--word-core);
+  animation: tc-strike-word 550ms step-end 650ms both;
+}
+
+.tc-theatre__end .tc-sign__caps {
+  --core: var(--caps-core);
+  animation: tc-strike-word 550ms step-end 740ms both;
+}
+
+.tc-theatre__end-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* Hero: the quiet third CTA. */
+.tc-reel-btn__icon {
+  width: 14px;
+  height: 14px;
+  order: -1;
+  color: #fff;
+  filter: drop-shadow(0 0 4px var(--tube));
+}
+
+.tc-reel-btn__time {
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+
+@media (orientation: portrait) {
+  .tc-theatre {
+    --ratio: 1.7778;
+  }
+}
+
+@media (max-width: 760px) {
+  .tc-theatre__tc--total {
+    display: none;
+  }
+
+  .tc-theatre__tc {
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theatre] .tc-hero .tc-sign__art,
+  :root[data-theatre="return"] .tc-hero .tc-sign__box,
+  :root[data-theatre="return"] .tc-hero .tc-sign__script,
+  :root[data-theatre="return"] .tc-hero .tc-sign__caps,
+  :root[data-theatre="return"] .tc-hero .tc-sign__wash,
+  .tc-theatre__end .tc-sign__box,
+  .tc-theatre__end .tc-sign__script,
+  .tc-theatre__end .tc-sign__caps,
+  .tc-theatre__bar--top,
+  .tc-theatre__bar--bottom {
+    animation: none;
+  }
+
+  .tc-theatre__dark,
+  .tc-theatre__frame {
+    animation-duration: 200ms;
+    animation-delay: 0ms;
+  }
+}

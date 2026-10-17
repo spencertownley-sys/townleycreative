@@ -38,5 +38,13 @@ When this file and the PRD disagree, the PRD wins; update this file.
 | --- | --- |
 | 1 Intake, 2 Repo | Done |
 | 3 Foundation: tokens, fonts, grain, vignette, materials, metal bar, `site.ts` | Done |
-| 4 The sign: `NeonSign`, `StatusSign`, `Nav`, hero with reflection and flicker | Done; **checkpoint: owner approves the live hero** |
-| 5 to 11 | Not started |
+| 4 The sign: `NeonSign`, `StatusSign`, `Nav`, hero with reflection and flicker | Done |
+| 5 Copy sections: Statement, Process, Studio, Contact/footer | Done |
+| 6 Services + Pricing from one price file | Done |
+| 7 Placeholders: six concept frames, studio image, concept reel | Done |
+| 8 Funnels: quote form, audit form, `/thanks`, leads table, optional email | Done; Calendly and email wait on open items |
+| 9 Analytics + SEO | Partly: titles, sitemap, LocalBusiness schema; no analytics yet |
+| 10 Hardening, 11 Hand-off | Not started |
+
+Added on request: reel theatre mode ("Lights down") and grade-wipe work tiles
+(LOG at rest; hover or drag wipes the grade across).

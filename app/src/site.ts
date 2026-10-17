@@ -36,7 +36,51 @@ export const NAV_LINKS = [
 
 export const START_HREF = "/#contact";
 export const QUOTE_HREF = "/quote";
+export const AUDIT_HREF = "/audit";
 export const PRICING_HREF = "/#pricing";
+
+/** The reel shown in theatre mode. Swap the file (and runtime) when real work
+ *  replaces the concept cut; set isConcept to false at the same time. */
+export const REEL = {
+  /** First playable source wins: VP9 WebM (smaller), then H.264 MP4. */
+  sources: [
+    { src: "/media/reel/reel.webm", type: "video/webm" },
+    { src: "/media/reel/reel.mp4", type: "video/mp4" },
+  ],
+  poster: "/media/reel/reel-poster.webp",
+  runtime: "0:26",
+  /** The concept cut is silent; set true for a reel with a soundtrack. */
+  hasAudio: false,
+  isConcept: true,
+} as const;
+
+/** Quote form options (PRD tab 4). */
+export const BUDGETS = [
+  "Under $1k",
+  "$1–3k",
+  "$3–7.5k",
+  "$7.5–15k",
+  "$15k+",
+  "Tell me what it costs",
+] as const;
+export const TIMELINES = ["This month", "Next 1–3 months", "Later", "Hard date"] as const;
+export const SEGMENTS = [
+  "Restaurant / bar",
+  "Music",
+  "Event / venue",
+  "Startup",
+  "Small business",
+  "Real estate",
+  "Corporate",
+  "Other",
+] as const;
+export const SOURCES = [
+  "Instagram",
+  "Google",
+  "A friend or client",
+  "Saw your work somewhere",
+  "Other",
+] as const;
 
 /** True while a constant still holds its placeholder (empty or "[...]"). */
 export function isPlaceholder(value: string): boolean {

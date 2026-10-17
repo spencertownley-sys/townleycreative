@@ -15,6 +15,7 @@ import { reportHiggsfieldError } from "../lib/higgsfield-error-reporting";
 // Editing it via the app settings UI rewrites this file and redeploys the app.
 import appMetaJson from "../app-meta.json";
 import { GrainOverlay, Vignette } from "../components/townley/Atmosphere";
+import { Footer } from "../components/townley/Footer";
 import { Nav } from "../components/townley/Nav";
 import { TubeButton } from "../components/townley/TubeButton";
 import { FONT_STYLESHEET, SITE_NAME, SITE_TITLE, TAGLINE, emailHref } from "../site";
@@ -229,6 +230,7 @@ function RootComponent() {
       <Nav />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Footer />
     </QueryClientProvider>
   );
 }

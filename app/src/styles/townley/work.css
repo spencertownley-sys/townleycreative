@@ -1,0 +1,351 @@
+/* 4 · Work: the reel poster and the grade-wipe wall. */
+
+.tc-reelcard {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.39 / 1;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #2b3035;
+  border-radius: 4px;
+  background: #050506;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 0 1px rgb(61 108 255 / 0.3),
+    0 30px 80px rgb(0 0 0 / 0.6);
+  transition:
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.tc-reelcard__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.85) brightness(0.8);
+  transition: filter 600ms ease;
+}
+
+.tc-reelcard__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0.55) 0%,
+      transparent 30%,
+      transparent 55%,
+      rgb(0 0 0 / 0.8) 100%
+    ),
+    radial-gradient(ellipse at 50% 50%, transparent 40%, rgb(0 0 0 / 0.45) 100%);
+}
+
+.tc-reelcard__play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  margin: -44px 0 0 -44px;
+  box-sizing: border-box;
+  border: 2px solid var(--tube);
+  border-radius: 50%;
+  background: rgb(5 5 7 / 0.35);
+  box-shadow:
+    0 0 10px var(--tube),
+    0 0 30px rgb(61 108 255 / 0.55),
+    inset 0 0 18px rgb(61 108 255 / 0.45);
+  transition:
+    box-shadow 300ms ease,
+    background 300ms ease;
+}
+
+.tc-reelcard__play svg {
+  width: 30px;
+  height: 30px;
+  margin-left: 4px;
+  color: #fff;
+  filter: drop-shadow(0 0 6px rgb(255 255 255 / 0.6));
+}
+
+.tc-reelcard__meta {
+  position: absolute;
+  left: clamp(18px, 3vw, 36px);
+  bottom: clamp(16px, 3vw, 30px);
+  display: grid;
+  gap: 8px;
+}
+
+.tc-reelcard__title {
+  font: 500 clamp(20px, 2.6vw, 34px)/1 var(--font-caps);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--caps-core);
+  text-shadow:
+    0 0 2px #fff,
+    0 0 10px rgb(57 255 20 / 0.6);
+}
+
+.tc-reelcard:hover,
+.tc-reelcard:focus-visible {
+  border-color: var(--tube);
+  box-shadow:
+    0 0 0 1px rgb(61 108 255 / 0.5),
+    0 0 40px rgb(61 108 255 / 0.25),
+    0 30px 80px rgb(0 0 0 / 0.6);
+}
+
+.tc-reelcard:hover .tc-reelcard__poster,
+.tc-reelcard:focus-visible .tc-reelcard__poster {
+  filter: saturate(1) brightness(0.95);
+}
+
+.tc-reelcard:hover .tc-reelcard__play,
+.tc-reelcard:focus-visible .tc-reelcard__play {
+  background: rgb(61 108 255 / 0.18);
+  box-shadow:
+    0 0 14px var(--tube),
+    0 0 50px rgb(61 108 255 / 0.65),
+    inset 0 0 24px rgb(61 108 255 / 0.6);
+}
+
+/* The wall */
+.tc-wall-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin: clamp(56px, 7vw, 88px) 0 22px;
+}
+
+.tc-wall-hint {
+  margin: 0;
+  font: 400 12px/1.3 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.tc-wall-hint--touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .tc-wall-hint--hover {
+    display: none;
+  }
+
+  .tc-wall-hint--touch {
+    display: inline;
+  }
+}
+
+.tc-wall {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.2vw, 28px);
+}
+
+.tc-wipe-tile {
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+@property --wipe {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
+.tc-wipe {
+  --wipe: 0%;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid #2c3136;
+  border-radius: 3px;
+  background: #111214;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  /* 1px blue inner line, metal-edged frame (PRD tab 2, imagery). */
+  box-shadow:
+    inset 0 0 0 1px rgb(61 108 255 / 0.35),
+    0 14px 34px rgb(0 0 0 / 0.5);
+  transition: --wipe 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Following the pointer: near-instant, so it tracks without lag. */
+.tc-wipe[data-live] {
+  transition: --wipe 70ms linear;
+}
+
+.tc-wipe__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.tc-wipe__img--grade {
+  clip-path: inset(0 calc(100% - var(--wipe)) 0 0);
+}
+
+.tc-wipe__seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--wipe);
+  width: 2px;
+  margin-left: -1px;
+  background: #fff;
+  box-shadow:
+    0 0 6px var(--tube),
+    0 0 18px rgb(61 108 255 / 0.7);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.tc-wipe[data-state="split"] .tc-wipe__seam {
+  opacity: 1;
+}
+
+.tc-wipe__tag,
+.tc-wipe__slate {
+  position: absolute;
+  padding: 5px 7px;
+  border-radius: 2px;
+  background: rgb(5 5 7 / 0.6);
+  font: 400 10px/1 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+
+.tc-wipe__tag--log {
+  top: 10px;
+  right: 10px;
+  color: var(--text-dim);
+}
+
+.tc-wipe__tag--grade {
+  top: 10px;
+  left: 10px;
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgb(61 108 255 / 0.6);
+  opacity: 0;
+}
+
+.tc-wipe[data-state="split"] .tc-wipe__tag--grade,
+.tc-wipe[data-state="graded"] .tc-wipe__tag--grade {
+  opacity: 1;
+}
+
+.tc-wipe[data-state="graded"] .tc-wipe__tag--log {
+  opacity: 0;
+}
+
+.tc-wipe__slate {
+  left: 10px;
+  bottom: 10px;
+  color: rgb(227 230 228 / 0.75);
+}
+
+/* Keyboard: the slider is invisible but focusable; focus lights the frame. */
+.tc-wipe__range {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  opacity: 0;
+}
+
+.tc-wipe:has(.tc-wipe__range:focus-visible) {
+  outline: 2px solid var(--tube);
+  outline-offset: 3px;
+}
+
+.tc-wipe:has(.tc-wipe__range:focus-visible) .tc-wipe__seam {
+  opacity: 1;
+}
+
+.tc-wipe-tile__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 12px;
+  font: 400 14px/1.3 var(--font-caps);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.tc-wipe-tile__concept {
+  font: 400 10px/1 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.tc-work__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 28px;
+  margin-top: clamp(40px, 5vw, 64px);
+}
+
+.tc-work__first {
+  margin: 0;
+  font: 400 20px/1.3 var(--font-caps);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+@media (max-width: 1100px) {
+  .tc-wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .tc-reelcard {
+    aspect-ratio: 16 / 10;
+  }
+
+  .tc-reelcard__play {
+    width: 68px;
+    height: 68px;
+    margin: -34px 0 0 -34px;
+  }
+
+  .tc-wall {
+    gap: 14px 10px;
+  }
+
+  .tc-wipe__slate {
+    display: none;
+  }
+
+  .tc-wipe-tile__caption {
+    font-size: 12px;
+  }
+}
