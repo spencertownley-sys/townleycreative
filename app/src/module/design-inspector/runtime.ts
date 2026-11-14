@@ -24,6 +24,21 @@ type InspectorState = {
   scrollStopTimer: number | null;
 };
 
+// Only the Higgsfield editor may switch the inspector on. Without this check any
+// page that can frame the site could enable it and read element/source metadata.
+export const ALLOWED_PARENT_ORIGINS = ["https://higgsfield.ai"];
+const ALLOWED_PARENT_SUFFIX = ".higgsfield.ai";
+
+export function isAllowedParentOrigin(origin: string): boolean {
+  if (ALLOWED_PARENT_ORIGINS.includes(origin)) return true;
+  try {
+    const url = new URL(origin);
+    return url.protocol === "https:" && url.hostname.endsWith(ALLOWED_PARENT_SUFFIX);
+  } catch {
+    return false;
+  }
+}
+
 declare global {
   interface Window {
     __higgsfieldDesignInspectorInstalled?: boolean;
@@ -511,6 +526,9 @@ export function installHiggsfieldDesignInspector() {
 
   window.addEventListener("message", (event) => {
     if (event.source !== window.parent) {
+      return;
+    }
+    if (!isAllowedParentOrigin(event.origin)) {
       return;
     }
     if (isPreviewCropMessage(event.data)) {
